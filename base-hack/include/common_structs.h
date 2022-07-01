@@ -664,7 +664,8 @@ typedef struct behaviour_data {
 	/* 0x071 */ char unk_71;
 	/* 0x072 */ char unk_72[0x94-0x72];
 	/* 0x094 */ void* cutscene_controller_pointer;
-	/* 0x098 */ char unk_98[0x9B-0x98];
+	/* 0x098 */ char unk_98[0x9A-0x98];
+	/* 0x09A */ unsigned char state_bitfield;
 	/* 0x09B */ unsigned char persistance;
 	/* 0x09C */ char unk_9C[0xA0-0x9C];
 } behaviour_data;

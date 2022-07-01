@@ -269,4 +269,11 @@ instance_script_maps = [
             {"name": "star", "id": 0x0},
         ],
     },
+    {
+        "name": "lighthouse",
+        "map": 0x31,
+        "scripts": [
+            {"name": "lever", "id": 0},
+        ]
+    }
 ]

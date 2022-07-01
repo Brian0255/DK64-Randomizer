@@ -19,6 +19,7 @@
 #define TINY_TEMPLE 0x10
 #define CAVES_CHUNKY_5DC 0x5A
 #define HELM_LOBBY 0xAA
+#define GALLEON_LIGHTHOUSE 0x31
 
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
@@ -49,6 +50,7 @@
 #define CAVES_SMALLBOULDERPAD 0x2E
 #define CAVES_BIGBOULDERPAD 0x2F
 #define GALLEON_DKSTAR 0xC
+#define LIGHTHOUSE_LEVER 0x0
 
 #define TGROUNDS_BAMBOOGATE 0x49
 #define TGROUNDS_SWITCH 0x39
@@ -311,6 +313,27 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		case HELM_LOBBY:
 			if (param2 == HELMLOBBY_GGONE) {
 				return isBonus(PreviousMap);
+			}
+			break;
+		case GALLEON_LIGHTHOUSE:
+			if (param2 == LIGHTHOUSE_LEVER) {
+				if (Rando.quality_of_life) {
+					behaviour_pointer->next_state = 6; // Skip transition stuff
+					delayedObjectModel2Change(30,0x27,40); // Ship will check flag and spawn accordingly
+					delayedObjectModel2Change(30,0x51,0); // Make night outside
+					setPermFlag(FLAG_MODIFIER_GALLEONSHIP); // Set ship flag
+					modifyObjectState(0x2F,10); // Spawn GB Cutscene
+					// Let the GB play the cutscene (DK64 is weird)
+					int obj_idx = convertIDToIndex(0x2F);
+					int* m2location = ObjectModel2Pointer;
+					ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,obj_idx);
+					if (_object) {
+						behaviour_data* behav = _object->behaviour_pointer;
+						if (behav) {
+							behav->state_bitfield &= 0xFE;
+						}
+					}
+				}
 			}
 			break;
 		case JUNGLE_JAPES:

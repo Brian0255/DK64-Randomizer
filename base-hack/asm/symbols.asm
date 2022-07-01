@@ -124,6 +124,7 @@
 .definelabel loadCounterFontTexture, 0x8069DC80
 .definelabel delayedObjectModel2Change, 0x8063DB3C
 .definelabel cycleRNG, 0x806119A0
+.definelabel modifyObjectState, 0x8063DA40
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
