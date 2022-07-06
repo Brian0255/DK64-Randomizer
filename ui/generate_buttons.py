@@ -116,7 +116,9 @@ def generate_seed(event):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_bps_javascript()
         loop.run_until_complete(ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings."))
-        background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
+        js.settings_string = ""
+        print(setting_string_generator(json.loads(json.dumps(form_data))))
+        #background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
 
 
 @bind("click", "download_patch_file")
@@ -170,3 +172,25 @@ def disable_input(event):
             js.document.getElementById("input-file-rom_2").id = "input-file-rom"
         except Exception:
             pass
+
+
+# for every type of object in dict append a letter to a stored string
+def setting_string_generator(data: dict):
+    letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+    for key, value in data.items():
+        if isinstance(value, dict):
+            setting_string_generator(value)
+        else:
+            if key not in ["seed"]:
+                if isinstance(value, bool):
+                    if value is True:
+                        js.settings_string += "b"
+                    else:
+                        js.settings_string += "B"
+                elif isinstance(value, int):
+                    js.settings_string += "i" + str(hex(value)).replace("0x", "")
+                elif isinstance(value, str):
+                    js.settings_string += key[0]
+                else:
+                    raise Exception("Unknown type in settings_string_generator")
+    return js.settings_string
